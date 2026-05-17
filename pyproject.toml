@@ -27,8 +27,8 @@ dependencies = [
 [project.scripts]
 inspect-otel = "inspect_otel.cli:main"
 
-[project.entry-points."inspect_ai.hooks"]
-inspect_otel = "inspect_otel.hook:OtelHook"
+[project.entry-points.inspect_ai]
+inspect_otel = "inspect_otel._registry"
 
 [project.urls]
 Repository = "https://github.com/eoin/inspect-otel"

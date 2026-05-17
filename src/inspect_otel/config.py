@@ -20,3 +20,17 @@ def service_name() -> str:
 def sample_span_limit() -> int | None:
     val = os.environ.get("INSPECT_OTEL_SAMPLE_SPAN_LIMIT")
     return int(val) if val is not None else None
+
+
+def endpoint() -> str | None:
+    val = os.environ.get("INSPECT_OTEL_ENDPOINT")
+    if val is not None:
+        return val
+    return os.environ.get("OTEL_EXPORTER_OTLP_ENDPOINT")
+
+
+def headers() -> str | None:
+    val = os.environ.get("INSPECT_OTEL_HEADERS")
+    if val is not None:
+        return val
+    return os.environ.get("OTEL_EXPORTER_OTLP_HEADERS")
