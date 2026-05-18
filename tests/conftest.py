@@ -13,7 +13,15 @@ from inspect_ai.event._score import ScoreEvent
 from inspect_ai.event._span import SpanBeginEvent, SpanEndEvent
 from inspect_ai.event._subtask import SubtaskEvent
 from inspect_ai.event._tool import ToolEvent
-from inspect_ai.log._log import EvalConfig, EvalDataset, EvalLog, EvalSample, EvalSpec, EvalStats
+from inspect_ai.log._log import (
+    EvalConfig,
+    EvalDataset,
+    EvalLog,
+    EvalResults,
+    EvalSample,
+    EvalSpec,
+    EvalStats,
+)
 from inspect_ai.model._model_output import ModelOutput, ModelUsage
 from inspect_ai.scorer._metric import Score
 from inspect_ai.tool._tool_call import ToolCallError
@@ -47,6 +55,7 @@ def make_eval_log(
     run_id: str = "run-001",
     eval_id: str = "eval-001",
     status: str = "success",
+    results: EvalResults | None = None,
 ) -> EvalLog:
     return EvalLog(
         status=status,
@@ -61,6 +70,7 @@ def make_eval_log(
         ),
         stats=EvalStats(),
         samples=samples,
+        results=results,
     )
 
 
@@ -132,9 +142,10 @@ def make_score_event(
     value: str | int | float = 1.0,
     answer: str | None = None,
     explanation: str | None = None,
+    metadata: dict | None = None,
 ) -> ScoreEvent:
     return ScoreEvent(
-        score=Score(value=value, answer=answer, explanation=explanation),
+        score=Score(value=value, answer=answer, explanation=explanation, metadata=metadata),
         scorer=scorer,
         target="answer",
         intermediate=False,
@@ -144,10 +155,12 @@ def make_score_event(
 def make_subtask_event(
     *,
     name: str = "research_agent",
+    uuid: str | None = None,
 ) -> SubtaskEvent:
     return SubtaskEvent(
         name=name,
         input={},
+        uuid=uuid,
     )
 
 
